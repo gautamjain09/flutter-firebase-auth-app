@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth_app/screens/signup_email_password.dart';
 import 'package:firebase_auth_app/services/firebase_auth_methods.dart';
 import 'package:firebase_auth_app/utils/custom_textfield.dart';
 import 'package:flutter/material.dart';
@@ -57,12 +58,32 @@ class _EmailPasswordLoginState extends State<EmailPasswordLogin> {
                 const TextStyle(color: Colors.white),
               ),
               minimumSize: MaterialStateProperty.all(
-                Size(MediaQuery.of(context).size.width / 2.5, 50),
+                Size(MediaQuery.of(context).size.width / 2, 45),
               ),
             ),
             child: const Text(
               "Login",
               style: TextStyle(color: Colors.white, fontSize: 16),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const EmailPasswordSignup(),
+                ),
+              );
+            },
+            style: ButtonStyle(
+              minimumSize: MaterialStateProperty.all(
+                Size(MediaQuery.of(context).size.width / 2, 45),
+              ),
+            ),
+            child: const Text(
+              "New user Signup here!",
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.w400),
             ),
           ),
         ],

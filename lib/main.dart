@@ -1,4 +1,6 @@
-import 'package:firebase_auth_app/screens/loginup_email_password.dart';
+import 'package:firebase_auth_app/screens/google_signin.dart';
+import 'package:firebase_auth_app/screens/login_email_password.dart';
+import 'package:firebase_auth_app/screens/phone_login.dart';
 import 'package:firebase_auth_app/screens/signup_email_password.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +22,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       // home: EmailPasswordSignup(),
-      home: EmailPasswordLogin(),
+      // home: EmailPasswordLogin(),
+      // home: PhoneLogin(),
+      home: GoogleSignIn(),
     );
   }
 }
