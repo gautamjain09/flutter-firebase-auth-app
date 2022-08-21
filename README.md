@@ -3,4 +3,6 @@ Flutter Authentication App
 -> Email Password Auth
 -> Google Auth
 -> Phone Number Auth 
+-> Anonymous Auth
+-> Provider Auth
 

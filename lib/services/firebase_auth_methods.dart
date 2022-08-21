@@ -4,6 +4,7 @@ import 'package:firebase_auth_app/utils/showOTPDialog.dart';
 import "package:flutter/material.dart";
 import 'package:firebase_auth_app/utils/showSnackBar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class FirebaseAuthMethods {
   final FirebaseAuth _auth;
@@ -76,9 +77,43 @@ class FirebaseAuthMethods {
     }
   }
 
+  // <---------------- Google Sign In ----------------------->
+
+  Future<void> googleSignIn(BuildContext context) async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
+
+      if (googleAuth?.accessToken != null && googleAuth?.idToken != null) {
+        final credentiall = GoogleAuthProvider.credential(
+          accessToken: googleAuth?.accessToken,
+          idToken: googleAuth?.idToken,
+        );
+
+        UserCredential userCredential =
+            await _auth.signInWithCredential(credentiall);
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()),
+        );
+
+        // if (userCredential.user != null) {
+        //   if (userCredential.additionalUserInfo!.isNewUser) {
+        //     // if you want to do specific task like storing information in firestore
+        //     // only for new users using google sign in
+        //   }
+        // }
+      }
+    } on FirebaseException catch (e) {
+      showSnackBar(context, e.message!);
+    }
+  }
+
   // <-------------- Phone Number Sign In --------------------->
 
-  // PHONE SIGN IN
   Future<void> phoneSignIn(
     BuildContext context,
     String phoneNumber,
@@ -119,5 +154,19 @@ class FirebaseAuthMethods {
         // Auto-resolution timed out...
       },
     );
+  }
+
+  // <----------------- Anonymous Sigi In ----------------------->
+
+  Future<void> anonymousSignIn(BuildContext context) async {
+    try {
+      await _auth.signInAnonymously();
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
+    } on FirebaseException catch (e) {
+      showSnackBar(context, e.message!);
+    }
   }
 }
