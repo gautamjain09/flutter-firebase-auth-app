@@ -1,4 +1,4 @@
-import 'package:firebase_auth_app/screens/home.dart';
+import 'package:firebase_auth_app/home.dart';
 import 'package:firebase_auth_app/screens/login_email_password.dart';
 import 'package:firebase_auth_app/utils/showOTPDialog.dart';
 import "package:flutter/material.dart";
@@ -9,6 +9,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 class FirebaseAuthMethods {
   final FirebaseAuth _auth;
   FirebaseAuthMethods(this._auth);
+
+  User get user => _auth.currentUser!;
 
   // <-------------- Email Password - Signup --------------------->
 
@@ -127,11 +129,6 @@ class FirebaseAuthMethods {
       verificationCompleted: (PhoneAuthCredential credential) async {
         // !!! works only on android !!!
         await _auth.signInWithCredential(credential);
-
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => HomePage()),
-        // );
       },
       verificationFailed: (e) {
         showSnackBar(context, e.message!);
@@ -147,6 +144,11 @@ class FirebaseAuthMethods {
             );
             await _auth.signInWithCredential(credential);
             Navigator.of(context).pop(); // Remove the dialog box
+
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+            );
           },
         );
       }),
@@ -156,7 +158,7 @@ class FirebaseAuthMethods {
     );
   }
 
-  // <----------------- Anonymous Sigi In ----------------------->
+  // <----------------- Anonymous Sign In ----------------------->
 
   Future<void> anonymousSignIn(BuildContext context) async {
     try {
@@ -165,6 +167,32 @@ class FirebaseAuthMethods {
         context,
         MaterialPageRoute(builder: (context) => HomePage()),
       );
+    } on FirebaseException catch (e) {
+      showSnackBar(context, e.message!);
+    }
+  }
+
+  // <--------------------- Sign Out ----------------------------->
+
+  Future<void> signOutt(BuildContext context) async {
+    try {
+      await _auth.signOut();
+
+      final GoogleSignIn _googleSignIn = new GoogleSignIn();
+      await _googleSignIn.signOut();
+
+      Navigator.of(context).pop();
+    } on FirebaseException catch (e) {
+      showSnackBar(context, e.message!);
+    }
+  }
+
+  // <--------------------- Delete Account ----------------------------->
+
+  Future<void> deleteAccount(BuildContext context) async {
+    try {
+      await user.delete();
+      Navigator.of(context).pop();
     } on FirebaseException catch (e) {
       showSnackBar(context, e.message!);
     }

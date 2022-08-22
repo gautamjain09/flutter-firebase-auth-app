@@ -1,8 +1,7 @@
-# firebase_firebase_auth_app
-Flutter Authentication App
--> Email Password Auth
--> Google Auth
--> Phone Number Auth 
--> Anonymous Auth
--> Provider Auth
-
+## Firebase Firebase Auth App
+- Email/Password Signup
+- Email/Password Login
+- Email Verification
+- Google Sign In
+- Phone Sign In
+- Anonymous Sign In
